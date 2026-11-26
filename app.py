@@ -7,7 +7,6 @@ from docx import Document
 from sklearn.feature_extraction.text import TfidfVectorizer, ENGLISH_STOP_WORDS
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-import joblib
 
 BASE = Path(__file__).resolve().parent
 DATA = BASE / "data" / "training_data.csv"
@@ -95,15 +94,10 @@ def train():
         ("clf", LogisticRegression(max_iter=1500, class_weight="balanced"))
     ])
     pipe.fit(df.text.astype(str), df.domain.astype(str))
-    joblib.dump(pipe, MODEL)
     return pipe, len(df)
 
 ensure_data()
-if MODEL.exists():
-    model = joblib.load(MODEL)
-    training_count = len(pd.read_csv(DATA))
-else:
-    model, training_count = train()
+model, training_count = train()
 
 def get_text(file):
     raw = file.read()
