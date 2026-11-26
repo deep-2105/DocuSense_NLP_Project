@@ -117,9 +117,9 @@ def get_text(file):
     raise ValueError("Please upload a TXT, PDF, or DOCX file.")
 
 def classify(text):
-    text = re.sub(r"https?://\\S+|www\\.\\S+", " ", text)
-    text = re.sub(r"\\s+", " ", text).strip()
-    words = re.findall(r"\\b[\\w'-]+\\b", text)
+    text = re.sub(r"https?://\S+|www\.\S+", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    words = re.findall(r"\b[\w'-]+\b", text)
     if len(words) < 8:
         raise ValueError("Please enter a document with at least 8 words.")
     probs = model.predict_proba([text])[0]
